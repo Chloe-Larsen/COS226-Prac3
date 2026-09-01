@@ -1,3 +1,5 @@
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class Main {
 
     private static final int NUMBER_OF_THREADS = 16;
@@ -8,6 +10,7 @@ public class Main {
         Lock lock = new TASLockOp();
         Thread[] threads = new Thread[NUMBER_OF_THREADS];
         long startTime = System.nanoTime();
+        AtomicInteger totalTestAndSetCount = new AtomicInteger(0);
 
         for (int i = 0; i < NUMBER_OF_THREADS; i++) {
             threads[i] = new Thread(() -> {
@@ -16,6 +19,9 @@ public class Main {
                     counter++;
                     lock.unlock();
                 }
+
+                // add total getAndSet() calls for this thread
+                totalTestAndSetCount.addAndGet(lock.getTestAndSetCount());
             });
 
             threads[i].start();
@@ -30,5 +36,6 @@ public class Main {
         System.out.println("Expected counter: " + (NUMBER_OF_THREADS * INCREMENTS_PER_THREAD));
         System.out.println("Actual counter: " + counter);
         System.out.println("Execution time: " + (endTime - startTime) / 1000000 + " ms");
+        System.out.println("Total testAndSet() calls: " + totalTestAndSetCount.get());
     }
 }

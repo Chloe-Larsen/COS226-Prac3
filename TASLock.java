@@ -1,6 +1,6 @@
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TASLock implements Lock {
+public class TASLock extends Lock {
 
     private final AtomicBoolean locked = new AtomicBoolean(false);
 
@@ -9,9 +9,14 @@ public class TASLock implements Lock {
         return locked.getAndSet(true);
     }
 
+    private boolean doTestAndSet() {
+        incrementTestAndSetCount();
+        return testAndSet();
+    }
+
     @Override
     public void lock() {
-        while (testAndSet()) {
+        while (doTestAndSet()) {
             Thread.onSpinWait(); // busy waiting
         }
     }

@@ -1,12 +1,17 @@
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TASLockOp implements Lock {
+public class TASLockOp extends Lock {
 
     private final AtomicBoolean locked = new AtomicBoolean(false);
 
     /* Do not modify this method */
     private boolean testAndSet() {
         return locked.getAndSet(true);
+    }
+
+    private boolean doTestAndSet() {
+        incrementTestAndSetCount();
+        return testAndSet();
     }
 
     @Override
@@ -17,7 +22,7 @@ public class TASLockOp implements Lock {
                 Thread.onSpinWait(); // busy waiting
             }
 
-            if (!testAndSet()) { // attempt atomic only when lock appears free
+            if (!doTestAndSet()) { // attempt atomic only when lock appears free
                 return; // lock acquired
             }
 
