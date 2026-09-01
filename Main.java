@@ -1,11 +1,11 @@
 public class Main {
 
-    private static final int NUMBER_OF_THREADS = 2;
+    private static final int NUMBER_OF_THREADS = 16;
     private static final int INCREMENTS_PER_THREAD = 1000000;
     private static int counter = 0;
 
     public static void main(String[] args) throws InterruptedException {
-        TASLock lock = new TASLock();
+        Lock lock = new TASLockOp();
         Thread[] threads = new Thread[NUMBER_OF_THREADS];
         long startTime = System.nanoTime();
 

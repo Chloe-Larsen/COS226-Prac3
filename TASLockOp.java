@@ -1,7 +1,6 @@
-
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class TASLockOp {
+public class TASLockOp implements Lock {
 
     private final AtomicBoolean locked = new AtomicBoolean(false);
 
@@ -10,6 +9,7 @@ public class TASLockOp {
         return locked.getAndSet(true);
     }
 
+    @Override
     public void lock() {
         while (true) {
             // check lock with plain read (no expensive atomic)
@@ -27,6 +27,7 @@ public class TASLockOp {
         }
     }
 
+    @Override
     public void unlock() {
         locked.set(false);
     }
