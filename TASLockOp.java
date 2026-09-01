@@ -11,21 +11,19 @@ public class TASLockOp {
     }
 
     public void lock() {
-
-        while (true) { 
-            //check lock with plain read (no expensive atomic)
+        while (true) {
+            // check lock with plain read (no expensive atomic)
             while (locked.get()) {
-
-                Thread.onSpinWait(); //busy waiting
-
+                Thread.onSpinWait(); // busy waiting
             }
 
-            if (!testAndSet()) {//attempt atomic only when lock appears free
-                return; //lock acquired
+            if (!testAndSet()) { // attempt atomic only when lock appears free
+                return; // lock acquired
             }
 
-            // this point is only achieved when another thread grabbed the lock between check and testAndSet()
-            //loop again and retry
+            // this point is only achieved when another thread grabbed the lock between
+            // check and testAndSet()
+            // loop again and retry
         }
     }
 
