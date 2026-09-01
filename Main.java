@@ -8,7 +8,7 @@ public class Main
     public static void main(String[] args) throws InterruptedException 
     {
 
-        TASLock lock = ;/*Your lock implementation here (You may also swap out the TAS lock for your optimised lock here)*/
+        TASLock lock = new TASLock();/*Your lock implementation here (You may also swap out the TAS lock for your optimised lock here)*/
         Thread[] threads = new Thread[NUMBER_OF_THREADS];
         long startTime = System.nanoTime();
 
