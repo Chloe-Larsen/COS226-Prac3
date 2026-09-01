@@ -5,8 +5,8 @@ public class TASLockOp extends Lock {
 
     private final AtomicBoolean locked = new AtomicBoolean(false);
 
-    private static final int MIN_DELAY_NS = 10;
-    private static final int MAX_DELAY_NS = 1000;
+    private static final int MIN_DELAY_NS = 10000;
+    private static final int MAX_DELAY_NS = 100000;
 
     /* Do not modify this method */
     private boolean testAndSet() {
